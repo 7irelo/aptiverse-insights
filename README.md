@@ -1,37 +1,38 @@
-# 🧠 Aptiverse Mastery Tracking Service
+# 📊 Aptiverse Insights & Study Plan Service
 
-## Scaler
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/1c0c38ed-79ee-448a-8298-dabc469ed5ca" width="380"/>
+</p>
 
-<img width="1899" height="991" alt="{E856A9DF-F75A-4AB7-ADF9-25BD5F2EECFC}" src="https://github.com/user-attachments/assets/9457b370-25b1-45bc-97d4-acf5834342fc" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/7dc437d9-db73-40d4-843f-96f75e16597f" width="300"/>
+  <img src="https://github.com/user-attachments/assets/adb9569a-4547-4fcf-b079-187ebb5b8cc9" width="300"/>
+</p>
 
-## ReDoc
+**Aptiverse Insights & Study Plan Service** is the microservice responsible for **learning analytics, AI-driven insights, and personalized study plan generation**.
 
-<img width="1892" height="989" alt="{1C1337BC-D6A7-49DD-A2CA-982A89AEA074}" src="https://github.com/user-attachments/assets/cb5fc220-c5a5-4471-bf82-11d14227116a" />
-
-**Aptiverse Mastery Tracking Service** is the microservice responsible for **student knowledge mastery modeling, topic proficiency tracking, and learning strength analysis** across subjects.
-
-> This service owns **mastery levels, knowledge gaps, strengths, and skill progression**.
-> It does **NOT** manage assessments, attempts, goals, rewards, tutors, or payments.
+> This service owns **recommendations, learning insights, future planning signals, and adaptive study schedules**.
+> It does **NOT** manage mastery calculations, assessments, goals, rewards, tutors, or payments.
 
 ---
 
 ## 🌟 Service Overview
 
-The Mastery Tracking Service is the **intelligence layer** that answers:
+The Insights Service answers:
 
-> *“Does the student truly understand this topic?”*
+> *“What should the student do next to improve?”*
 
-It transforms raw performance data (from Practice/Attempts service) into **long-term knowledge signals**.
+It sits **above Mastery + Practice services**, transforming learning data into **actionable plans**.
 
 This service enables:
 
-* 📚 Topic mastery scoring
-* 🧩 Knowledge gap detection
-* 💪 Strength identification
-* 📈 Skill progression tracking
-* 🎯 Readiness modeling for future topics
+* 📅 Personalized study plans
+* 📊 Learning trend analysis
+* 🎯 Priority topic recommendations
+* 📈 Performance forecasting
+* 🧠 Adaptive learning guidance
 
-This service powers **adaptive learning decisions** in the platform.
+This is the **decision engine** of the Aptiverse platform.
 
 ---
 
@@ -40,11 +41,11 @@ This service powers **adaptive learning decisions** in the platform.
 | Component        | Technology                                        |
 | ---------------- | ------------------------------------------------- |
 | Framework        | .NET 10, ASP.NET Core                             |
-| Database         | PostgreSQL + Entity Framework Core                |
+| Database         | PostgreSQL + EF Core                              |
 | Authentication   | JWT (validated via shared Auth service / gateway) |
 | API Docs         | Scaler / OpenAPI / ReDoc                          |
 | Containerization | Docker                                            |
-| Communication    | Consumes events from Practice Service             |
+| Communication    | Consumes Mastery + Practice events                |
 
 ---
 
@@ -52,11 +53,11 @@ This service powers **adaptive learning decisions** in the platform.
 
 ```
 src/
-├── Aptiverse.Mastery/                  # Controllers & API layer
-├── Aptiverse.Mastery.Application/      # DTOs, Services, Logic
-├── Aptiverse.Mastery.Domain/           # Domain Models
-├── Aptiverse.Mastery.Infrastructure/   # EF Core, Repositories, DbContext
-└── Aptiverse.Mastery.Core/             # Shared abstractions/utilities
+├── Aptiverse.Insights/                 # Controllers & API layer
+├── Aptiverse.Insights.Application/     # DTOs, Services, Logic
+├── Aptiverse.Insights.Domain/          # Insight Models
+├── Aptiverse.Insights.Infrastructure/  # EF Core, Repositories
+└── Aptiverse.Insights.Core/            # Shared abstractions
 ```
 
 ---
@@ -65,70 +66,66 @@ src/
 
 ### Domain Entities
 
-| Entity                      | Purpose                                 |
-| --------------------------- | --------------------------------------- |
-| **StudentSubjectAnalytics** | Aggregated academic performance signals |
-| **PrerequisiteMastery**     | Mastery of prerequisite topic chains    |
-| **KnowledgeGap**            | Identified areas of weak understanding  |
-| **ImprovementTip**          | Targeted guidance for weak areas        |
-| **TopicMastery** *(new)*    | Mastery score per student per topic     |
-| **SubjectMastery** *(new)*  | Overall subject-level proficiency       |
+| Entity               | Purpose                                |
+| -------------------- | -------------------------------------- |
+| **StudyPlan**        | Generated study schedule for a student |
+| **StudyPlanItem**    | Individual study tasks                 |
+| **LearningInsight**  | AI-generated insight about performance |
+| **PriorityTopic**    | Topics needing urgent focus            |
+| **PerformanceTrend** | Performance trajectory analysis        |
+| **ForecastMetric**   | Predicted future performance signals   |
 
 ---
 
 ## 🚀 Core Features
 
-### 📊 Mastery Modeling
+### 📅 Study Plan Generation
 
-* Calculate topic mastery scores
-* Update mastery after each new attempt
-* Track long-term learning progression
+* Generate weekly/daily study plans
+* Balance weak vs strong topics
+* Optimize revision cycles
 
-### 🧩 Knowledge Gap Detection
+### 📊 Learning Insights
 
-* Detect weak topics
-* Identify prerequisite gaps
-* Surface areas needing revision
+* Detect performance trends
+* Highlight improvement or decline
+* Identify burnout or overload patterns
 
-### 💪 Strength Identification
+### 🎯 Recommendations
 
-* Identify high-proficiency topics
-* Determine strongest subjects
-* Detect rapid improvement patterns
+* Suggest next topics
+* Recommend revision intensity
+* Suggest practice type (tests, revision, etc.)
 
-### 📈 Skill Progression
+### 📈 Forecasting
 
-* Track mastery over time
-* Maintain historical mastery states
-* Power readiness predictions for next topics
+* Predict exam readiness
+* Forecast subject improvement potential
+* Estimate confidence levels
 
 ---
 
 ## 🔧 API Endpoints
 
-### Topic Mastery
+### Study Plans
 
 ```
-GET /api/mastery/topics
-GET /api/mastery/topics/{topicId}
+GET  /api/study-plan
+POST /api/study-plan/generate
 ```
 
-### Subject Mastery
+### Insights
 
 ```
-GET /api/mastery/subjects
+GET /api/insights
+GET /api/insights/trends
 ```
 
-### Knowledge Gaps
+### Recommendations
 
 ```
-GET /api/mastery/gaps
-```
-
-### Improvement Tips
-
-```
-GET /api/mastery/improvement-tips
+GET /api/recommendations/topics
+GET /api/recommendations/practice
 ```
 
 ---
@@ -146,11 +143,11 @@ GET /api/mastery/improvement-tips
 ```json
 {
   "ConnectionStrings": {
-    "PostgreSQL": "Host=localhost;Database=aptiverse_mastery;Username=postgres;Password=password"
+    "PostgreSQL": "Host=localhost;Database=aptiverse_insights;Username=postgres;Password=password"
   },
   "Jwt": {
     "Issuer": "aptiverse-auth",
-    "Audience": "aptiverse-mastery",
+    "Audience": "aptiverse-insights",
     "Key": "local-dev-only"
   }
 }
@@ -160,8 +157,8 @@ GET /api/mastery/improvement-tips
 
 ```bash
 dotnet restore
-dotnet ef database update --project src/Aptiverse.Mastery.Infrastructure --startup-project src/Aptiverse.Mastery
-dotnet run --project src/Aptiverse.Mastery
+dotnet ef database update --project src/Aptiverse.Insights.Infrastructure --startup-project src/Aptiverse.Insights
+dotnet run --project src/Aptiverse.Insights
 ```
 
 ---
@@ -169,8 +166,8 @@ dotnet run --project src/Aptiverse.Mastery
 ## 🔐 Security Model
 
 * JWT authentication required
-* Students can only access their own mastery data
-* Educators/Admins can view aggregated class-level mastery
+* Student-scoped plans and insights
+* Educators can view aggregated analytics
 
 ---
 
@@ -186,12 +183,6 @@ GET /health/db
 
 ---
 
-## 📄 License
-
-This project is part of the Aptiverse ecosystem and is proprietary software. All rights reserved.
-
----
-
 ## 🎓 Mission of This Service
 
-> The Mastery Tracking Service exists to measure **true understanding**, not just scores — ensuring students progress based on knowledge, not memorization.
+> The Insights Service exists to turn data into direction — helping students focus on **what matters most next**, not just what they did before.
